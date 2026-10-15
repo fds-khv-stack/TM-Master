@@ -2,99 +2,174 @@
 <html lang="ru" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>ТМ — Мастерская мужских стрижек | Хабаровск</title>
-    <!-- Tailwind CSS для премиальной архитектуры стилей -->
+    <!-- Tailwind CSS для премиальной верстки -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- Шрифты: Oswald + Montserrat -->
+    <!-- Шрифтовая пара: Syne + Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Oswald:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400..700&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
         body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #060608;
+            font-family: 'Outfit', sans-serif;
+            background-color: #08080a;
+            font-weight: 400;
+            letter-spacing: 0.3px;
         }
         .font-heading {
-            font-family: 'Oswald', sans-serif;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            letter-spacing: -1px;
         }
-
-        /* ЭФФЕКТ 1: Кастомная деформация и скручивание карточек при скролле (Velocity Stretch) */
-        .bento-card {
-            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease, box-shadow 0.3s ease;
-            will-change: transform;
+        /* Интерактивная подсветка курсора (Ambient Mouse Glow) */
+        .glow-capture {
+            position: relative;
         }
-
-        /* ЭФФЕКТ 2: Посимвольная волновая анимация текста при наведении */
-        .char-wave span {
-            display: inline-block;
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        .glow-overlay {
+            pointer-events: none;
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: radial-gradient(circle 350px at var(--mouse-x, 0) var(--mouse-y, 0), rgba(245, 158, 11, 0.04), transparent 80%);
+            transition: opacity 0.5s ease;
         }
-        .char-wave:hover span {
-            transform: translateY(-4px) scale(1.05);
-            color: #f59e0b;
-        }
-
-        /* Бесконечный скролл-марки */
+        /* Бесконечные марки-ленты для портфолио */
         @keyframes marquee {
             0% { transform: translateX(0%); }
             100% { transform: translateX(-50%); }
         }
-        .animate-marquee { animation: marquee 24s linear infinite; }
+        .animate-marquee { animation: marquee 28s linear infinite; }
 
-        /* Кастомный жидкий оверлей курсора */
-        .cursor-lens {
+        /* ДЫМЧАТЫЙ КРОССФЕЙД ГАЛЕРЕИ — аристократичное медленное растворение */
+        .smoke-stage {
+            position: relative;
+            width: 100%;
+            height: 460px;
+        }
+        @media (max-width: 640px) {
+            .smoke-stage { height: 420px; }
+        }
+        .smoke-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transform: scale(1.12);
+            filter: blur(26px) brightness(1.35) saturate(0.4);
+            transition:
+                opacity 2.2s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 2.6s cubic-bezier(0.22, 1, 0.36, 1),
+                filter 2.2s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: opacity, transform, filter;
             pointer-events: none;
-            position: fixed;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(245,158,11,0.06) 0%, rgba(0,0,0,0) 70%);
+        }
+        .smoke-slide.active {
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0) brightness(1) saturate(1);
+            pointer-events: auto;
+        }
+        .smoke-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+        }
+        /* Клубящийся дымчатый слой, проявляется в момент перехода */
+        .smoke-veil {
+            position: absolute;
+            inset: 0;
             z-index: 5;
-            transform: translate(-50%, -50%);
+            pointer-events: none;
+            opacity: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 30% 40%, rgba(210, 190, 160, 0.18), transparent 70%),
+                radial-gradient(ellipse 50% 60% at 70% 60%, rgba(180, 160, 140, 0.14), transparent 70%);
             mix-blend-mode: screen;
-            transition: width 0.3s, height 0.3s;
-            will-change: transform;
+            transition: opacity 1.1s ease;
+        }
+        .smoke-veil.drifting {
+            opacity: 1;
+            animation: smoke-drift 2.4s ease-in-out;
+        }
+        @keyframes smoke-drift {
+            0% { transform: translate3d(0, 0, 0) scale(1); }
+            50% { transform: translate3d(14px, -10px, 0) scale(1.08); }
+            100% { transform: translate3d(0, 0, 0) scale(1); }
         }
         
-        /* Плавное появление блоков через Mask-reveal */
-        .reveal-view {
+        /* Пружинная анимация появления по стандарту frontend-design */
+        .reveal-card {
             opacity: 0;
-            clip-path: inset(10% 0 10% 0);
-            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), clip-path 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(35px) scale(0.98);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .reveal-view.active {
+        .reveal-card.active {
             opacity: 1;
-            clip-path: inset(0% 0 0% 0);
+            transform: translateY(0) scale(1);
         }
-
+        /* Анимация построчного проявления текста */
+        .line-reveal {
+            overflow: hidden;
+        }
+        .line-reveal span {
+            display: inline-block;
+            transform: translateY(100%);
+            animation: text-slide 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes text-slide {
+            to { transform: translateY(0); }
+        }
+        /* Скрытие мобильного меню по умолчанию */
         #mobile-menu {
-            transform: translateX(100%);
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(-100%);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
         #mobile-menu.open {
-            transform: translateX(0);
+            transform: translateY(0);
+        }
+        /* Мобильные доработки */
+        /* Фикс обрезки hero нижней панелью браузера на iOS/Android */
+        #hero {
+            min-height: 100vh;
+            min-height: 100dvh;
+        }
+        /* Safe-area для устройств с вырезом (notch) */
+        header > div,
+        #hero .relative.z-20 {
+            padding-left: max(1rem, env(safe-area-inset-left));
+            padding-right: max(1rem, env(safe-area-inset-right));
+        }
+        /* Блокировка прокрутки фона при открытом мобильном меню */
+        body.menu-open {
+            overflow: hidden;
+        }
+        /* Прокрутка самого меню, если экран по высоте маленький (альбомная ориентация) */
+        #mobile-menu {
+            overflow-y: auto;
         }
     </style>
 </head>
-<body class="text-gray-100 selection:bg-amber-500 selection:text-black overflow-x-hidden">
+<body class="text-gray-100 selection:bg-amber-500 selection:text-black overflow-x-hidden glow-capture">
     
-    <!-- Интерактивная линза преломления света за курсором -->
-    <div class="cursor-lens hidden lg:block" id="js-lens"></div>
+    <!-- Интерактивный слой динамического света -->
+    <div class="glow-overlay" id="ambient-glow"></div>
 
-    <!-- HEADER -->
-    <header class="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-[#060608]/70 border-b border-white/5">
+    <!-- АДАПТИВНЫЙ HEADER С МОБИЛЬНЫМ МЕНЮ -->
+    <header class="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-[#08080a]/60 border-b border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex justify-between items-center">
-            <a href="#" class="text-2xl font-black tracking-widest font-heading text-white hover:text-amber-500 transition-colors">ТМ</a>
+            <a href="#" class="inline-flex items-center justify-center w-12 h-12 border-2 border-amber-500 text-2xl font-black tracking-widest font-heading text-white hover:text-amber-500 hover:border-white transition-colors">ТМ</a>
             
-            <nav class="hidden md:flex space-x-10 text-[11px] font-bold tracking-[0.25em] uppercase text-gray-400">
-                <a href="#about" class="char-wave"><span>М</span><span>а</span><span>с</span><span>т</span><span>е</span><span>р</span><span>с</span><span>к</span><span>а</span><span>я</span></a>
-                <a href="#price" class="char-wave"><span>У</span><span>с</span><span>л</span><span>у</span><span>г</span><span>и</span></a>
-                <a href="#gallery" class="char-wave"><span>П</span><span>о</span><span>р</span><span>т</span><span>ф</span><span>о</span><span>л</span><span>и</span><span>о</span></a>
-                <a href="#team" class="char-wave"><span>К</span><span>о</span><span>м</span><span>а</span><span>н</span><span>д</span><span>а</span></a>
-                <a href="#contacts" class="char-wave"><span>К</span><span>о</span><span>н</span><span>т</span><span>а</span><span>к</span><span>т</span><span>ы</span></a>
+            <!-- Десктопная навигация -->
+            <nav class="hidden md:flex space-x-8 lg:space-x-10 text-[11px] font-bold tracking-[0.2em] uppercase text-gray-400">
+                <a href="#about" class="hover:text-white transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-amber-500 hover:after:w-full after:transition-all">Мастерская</a>
+                <a href="#price" class="hover:text-white transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-amber-500 hover:after:w-full after:transition-all">Услуги</a>
+                <a href="#gallery" class="hover:text-white transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-amber-500 hover:after:w-full after:transition-all">Портфолио</a>
+                <a href="#team" class="hover:text-white transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-amber-500 hover:after:w-full after:transition-all">Команда</a>
+                <a href="#contacts" class="hover:text-white transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-amber-500 hover:after:w-full after:transition-all">Контакты</a>
             </nav>
             
             <div class="flex items-center space-x-4 sm:space-x-6">
@@ -102,65 +177,65 @@
                     +7 999 088-88-45
                 </a>
                 <a href="https://n275390.yclients.com/company/267129/personal/select-master?o=m-1" target="_blank" 
-                   class="px-5 py-3 bg-amber-500 text-black font-bold uppercase tracking-widest text-[10px] transition-transform active:scale-95 hover:bg-white duration-300">
-                    Онлайн-запись
+                   class="px-4 sm:px-5 py-2.5 sm:py-3 bg-amber-500 text-black font-bold uppercase tracking-widest text-[9px] sm:text-[10px] transition-transform active:scale-95 hover:bg-white hover:text-black duration-300">
+                    Запись
                 </a>
-                <button id="menu-toggle" class="md:hidden text-white hover:text-amber-500 transition-colors p-1">
+                <!-- Бургер Кнопка для мобильных устройств -->
+                <button id="menu-toggle" class="md:hidden text-white hover:text-amber-500 transition-colors cursor-pointer p-1">
                     <i data-lucide="menu" class="w-6 h-6" id="menu-icon"></i>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Мобильное меню -->
-    <div id="mobile-menu" class="fixed inset-y-0 right-0 w-full max-w-sm z-40 bg-[#08080a] border-l border-white/5 flex flex-col justify-center items-center md:hidden p-6 shadow-2xl">
-        <nav class="flex flex-col space-y-6 text-center text-xl font-bold tracking-[0.2em] uppercase font-heading">
+    <!-- Выпадающее мобильное меню -->
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-[#08080a] flex flex-col justify-center items-center md:hidden pt-20">
+        <nav class="flex flex-col space-y-6 text-center text-lg font-bold tracking-[0.2em] uppercase font-heading">
             <a href="#about" onclick="toggleMenu()" class="text-gray-300 hover:text-amber-500 transition-colors">Мастерская</a>
             <a href="#price" onclick="toggleMenu()" class="text-gray-300 hover:text-amber-500 transition-colors">Услуги</a>
             <a href="#gallery" onclick="toggleMenu()" class="text-gray-300 hover:text-amber-500 transition-colors">Портфолио</a>
             <a href="#team" onclick="toggleMenu()" class="text-gray-300 hover:text-amber-500 transition-colors">Команда</a>
             <a href="#contacts" onclick="toggleMenu()" class="text-gray-300 hover:text-amber-500 transition-colors">Контакты</a>
         </nav>
-        <div class="mt-12 text-center space-y-4 w-full">
-            <div class="h-[1px] bg-white/5 w-full"></div>
-            <a href="tel:+79990888845" class="block text-sm font-bold tracking-widest text-gray-400 uppercase">+7 999 088-88-45</a>
+        <div class="mt-12 text-center space-y-4 px-6 w-full">
+            <div class="h-[1px] bg-white/5 w-full max-w-xs mx-auto"></div>
+            <a href="tel:+79990888845" class="block text-sm font-bold tracking-widest text-gray-400 hover:text-amber-500 uppercase">+7 999 088-88-45</a>
         </div>
     </div>
 
-    <!-- БЛОК 1: ГЛАВНЫЙ ЭКРАН (3D Живой глубокий фон) -->
+    <!-- БЛОК 1: ГЛАВНЫЙ ЭКРАН (Интегрирован файл gr.jpeg) -->
     <section id="hero" class="relative min-h-screen w-full overflow-hidden flex flex-col justify-center py-20">
-        <!-- Задний слой параллакса Z-0 -->
-        <div id="layer-bg" class="absolute inset-0 z-0 bg-cover bg-center scale-110 pointer-events-none will-change-transform" 
-             style="background-image: url('gr.jpeg');"></div>
-        <!-- Средний слой градиентного шейдера Z-10 -->
-        <div class="absolute inset-0 z-10 bg-gradient-to-r from-[#060608] via-[#060608]/75 to-transparent md:mix-blend-multiply"></div>
+        <!-- Путь изменен строго на gr.jpeg с сохранением эффектов параллакса -->
+        <div id="hero-parallax" class="absolute inset-0 z-0 bg-cover bg-center scale-105 pointer-events-none transition-transform duration-500 ease-out" 
+             style="background-image: url('img/gr.jpeg');"></div>
+        <div class="absolute inset-0 z-10 bg-gradient-to-r from-[#08080a] via-[#08080a]/80 md:via-[#08080a]/60 to-[#08080a]/20"></div>
 
-        <!-- Передний контентный слой Z-20 -->
-        <div id="layer-content" class="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 will-change-transform">
-            <div class="max-w-3xl space-y-8">
-                <span class="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.35em] text-amber-500 bg-amber-500/5 px-4 py-2 border border-amber-500/20 rounded-none">
-                    <i data-lucide="shield-check" class="w-4 h-4 text-amber-500"></i> Хабаровск • ул. Сысоева, 2
+        <div class="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="max-w-3xl space-y-6">
+                <span class="inline-flex items-center gap-2 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.3em] text-amber-500 bg-amber-500/10 px-3 sm:px-4 py-2 border border-amber-500/20 rounded-sm">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-amber-500"></i> Хабаровск • ул. Сысоева, 2
                 </span>
-                <h1 class="text-4xl sm:text-6xl md:text-8xl font-black uppercase font-heading tracking-tight leading-[1.05]">
+                <h1 class="text-4xl sm:text-6xl md:text-7xl font-black uppercase font-heading tracking-tight leading-[1.1] md:leading-[1.05]">
                     <div class="line-reveal"><span>ТМ — МАСТЕРСКАЯ</span></div>
-                    <div class="line-reveal"><span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-400 to-gray-700">МУЖСКИХ СТРИЖЕК</span></div>
+                    <div class="line-reveal"><span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-300 to-gray-500">МУЖСКИХ СТРИЖЕК</span></div>
                 </h1>
                 <p class="text-gray-400 text-sm sm:text-base md:text-xl font-light leading-relaxed max-w-xl">
-                    Территория мужчин с характером. Пространство, где во главе угла стоит ручной труд, идеальная геометрия линий и уважение к твоему стилю. Без лишнего снобизма.
+                    Территория мужчин с характером. Место, где во главе угла стоит ручной труд, чистая геометрия сведения линий и уважение к твоему стилю. Без лишнего снобизма.
                 </p>
                 <div class="pt-2 flex flex-col sm:flex-row gap-4 items-center">
-                    <button id="magnetic-cta" onclick="window.open('https://n275390.yclients.com/company/267129/personal/select-master?o=m-1', '_blank')"
-                            class="w-full sm:w-auto px-10 py-5 bg-white text-black font-bold uppercase tracking-widest text-xs transition-all cursor-pointer shadow-2xl hover:bg-amber-500 hover:text-black">
+                    <button id="mag-btn" onclick="window.open('https://n275390.yclients.com/company/267129/personal/select-master?o=m-1', '_blank')"
+                            class="w-full sm:w-auto px-8 py-4.5 sm:py-5 bg-white text-black font-bold uppercase tracking-widest text-xs transition-all cursor-pointer shadow-2xl hover:bg-amber-500">
                         Забронировать кресло
                     </button>
-                    <a href="#price" class="w-full sm:w-auto px-10 py-5 border border-white/10 text-white font-bold uppercase tracking-widest text-xs text-center hover:bg-white/5 hover:border-white transition-all duration-300">
+                    <a href="#price" class="w-full sm:w-auto px-8 py-4.5 sm:py-5 border border-white/10 text-white font-bold uppercase tracking-widest text-xs text-center hover:bg-white/5 hover:border-white transition-all duration-300">
                         Узнать цены услуг
                     </a>
                 </div>
             </div>
         </div>
 
-        <div class="absolute bottom-0 left-0 w-full z-20 border-t border-white/5 bg-[#060608]/40 backdrop-blur-md hidden sm:block">
+        <!-- Нижний служебный бар -->
+        <div class="absolute bottom-0 left-0 w-full z-20 border-t border-white/5 bg-[#08080a]/40 backdrop-blur-md hidden sm:block">
             <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] tracking-[0.25em] text-gray-500 uppercase font-semibold">
                 <div>Режим работы: Ежедневно 10:00 — 20:00</div>
                 <div class="flex space-x-6">
@@ -172,113 +247,119 @@
         </div>
     </section>
 
-    <!-- БЛОК 2: КИНЕТИЧЕСКАЯ BENTO GRID СЕТКА -->
-    <section id="about" class="py-24 sm:py-36 max-w-7xl mx-auto px-4 sm:px-6 space-y-16 reveal-view">
+    <!-- БЛОК 2: HIGH-END BENTO GRID ПРЕИМУЩЕСТВ -->
+    <section id="about" class="py-20 sm:py-32 max-w-7xl mx-auto px-4 sm:px-6 space-y-12 sm:space-y-16">
         <div>
             <h2 class="text-xs font-bold tracking-[0.4em] uppercase text-amber-500 mb-2">Наш манифест</h2>
             <p class="text-3xl sm:text-4xl font-black font-heading uppercase tracking-wide">Почему именно «Мастерская»</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="bento-container">
-            <!-- Карточка 1 -->
-            <div class="bento-card bg-[#0b0b0e] p-8 border border-white/5 flex flex-col justify-between group hover:border-amber-500/20 hover:shadow-[0_0_30px_rgba(245,158,11,0.02)] min-h-[250px]">
-                <div>
-                    <div class="w-10 h-10 bg-amber-500/5 flex items-center justify-center mb-6 border border-amber-500/10 group-hover:border-amber-500/30 transition-colors">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Ячейка 1: Инструменты 1 (2).jpg -->
+            <div class="reveal-card relative bg-cover bg-center border border-white/5 min-h-[250px] sm:min-h-[280px] overflow-hidden group hover:border-amber-500/30 transition-all duration-500"
+                 style="background-image: url('img/tm-2.jpg');">
+                <div class="absolute inset-0 bg-[#08080a]/82 group-hover:bg-[#08080a]/65 transition-all duration-500"></div>
+                <div class="relative z-10 p-6 sm:p-8 flex flex-col justify-end h-full">
+                    <div class="w-10 h-10 rounded-sm bg-amber-500/10 flex items-center justify-center mb-6 border border-amber-500/20">
                         <i data-lucide="scissors" class="w-4 h-4 text-amber-500"></i>
                     </div>
                     <h3 class="text-xl font-bold uppercase font-heading tracking-wider mb-3 text-white">Выверенная геометрия</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed font-light">Мы полностью отказались от конвейера. Каждый мастер скрупулезно выстраивает форму под анатомию черепа, структуру и направление роста волос.</p>
+                    <p class="text-gray-300 text-sm leading-relaxed font-light">Мы отказались от конвейера. Каждый мастер скрупулезно подбирает форму под анатомию черепа, текстуру волос и направление их роста.</p>
                 </div>
             </div>
 
-            <!-- Карточка 2: 1 (4).jpg -->
-            <div class="bento-card relative bg-cover bg-center border border-white/5 min-h-[250px] sm:min-h-[280px] overflow-hidden group" 
-                 style="background-image: url('1%20(4).jpg');">
-                <div class="absolute inset-0 bg-[#060608]/85 group-hover:bg-[#060608]/60 transition-all duration-500"></div>
-                <div class="absolute inset-0 p-8 flex flex-col justify-between z-10">
-                    <span class="text-[9px] font-bold tracking-widest uppercase text-amber-500 bg-[#060608]/90 border border-white/5 px-3 py-1 self-start">Инструмент</span>
+            <!-- Ячейка 2: Инструменты в боксе 1 (4).jpg -->
+            <div class="reveal-card relative bg-cover bg-center border border-white/5 min-h-[250px] sm:min-h-[280px] overflow-hidden group" 
+                 style="background-image: url('img/tm-4.jpg');">
+                <div class="absolute inset-0 bg-[#08080a]/80 group-hover:bg-[#08080a]/50 transition-all duration-500"></div>
+                <div class="absolute inset-0 p-6 sm:p-8 flex flex-col justify-between z-10">
+                    <span class="text-[10px] font-bold tracking-widest uppercase text-amber-500 bg-[#08080a]/90 border border-white/10 px-3 py-1 self-start">Инструмент</span>
                     <div>
                         <h3 class="text-xl font-bold uppercase font-heading tracking-wider mb-1 text-white">Культура ремесла</h3>
-                        <p class="text-gray-300 text-xs font-light">Премиальное и точное оборудование, проходящее обязательную медицинскую стерилизацию.</p>
+                        <p class="text-gray-300 text-xs font-light">Профессиональное оборудование, проходящее трехэтапную стерилизацию.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Карточка 3 -->
-            <div class="bento-card bg-[#0b0b0e] p-8 border border-white/5 flex flex-col justify-between group hover:border-amber-500/20 hover:shadow-[0_0_30px_rgba(245,158,11,0.02)] min-h-[250px]">
-                <div>
-                    <div class="w-10 h-10 bg-amber-500/5 flex items-center justify-center mb-6 border border-amber-500/10 group-hover:border-amber-500/30 transition-colors">
+            <!-- Ячейка 3: Кресло 1 (9).jpg -->
+            <div class="reveal-card relative bg-cover bg-center border border-white/5 min-h-[250px] sm:min-h-[280px] overflow-hidden group hover:border-amber-500/30 transition-all duration-500"
+                 style="background-image: url('img/tm-9.jpg');">
+                <div class="absolute inset-0 bg-[#08080a]/82 group-hover:bg-[#08080a]/65 transition-all duration-500"></div>
+                <div class="relative z-10 p-6 sm:p-8 flex flex-col justify-end h-full">
+                    <div class="w-10 h-10 rounded-sm bg-amber-500/10 flex items-center justify-center mb-6 border border-amber-500/20">
                         <i data-lucide="coffee" class="w-4 h-4 text-amber-500"></i>
                     </div>
                     <h3 class="text-xl font-bold uppercase font-heading tracking-wider mb-3 text-white">Правильная пауза</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed font-light">Здесь можно перевести дух. Выпить чашку хорошего крепкого кофе или свежего чая, поговорить по делу или провести визит в абсолютной тишине.</p>
+                    <p class="text-gray-300 text-sm leading-relaxed font-light">Здесь можно перевести дух. Выпить чашку хорошего крепкого кофе или свежего чая, поговорить по делу или просто побыть в абсолютной тишине.</p>
                 </div>
             </div>
 
-            <!-- Карточка 4: 1 (13).jpg -->
-            <div class="bento-card md:col-span-2 relative bg-cover bg-center border border-white/5 min-h-[280px] sm:min-h-[320px] overflow-hidden group" 
-                 style="background-image: url('1%20(13).jpg');">
-                <div class="absolute inset-0 bg-gradient-to-t from-[#060608] via-[#060608]/30 to-transparent"></div>
+            <!-- Ячейка 4: Линейка косметики 1 (13).jpg -->
+            <div class="reveal-card md:col-span-2 relative bg-cover bg-center border border-white/5 min-h-[260px] sm:min-h-[300px] overflow-hidden group" 
+                 style="background-image: url('img/tm-13.jpg');">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#08080a] via-[#08080a]/30 to-transparent"></div>
                 <div class="absolute bottom-0 left-0 p-6 sm:p-8 z-10 max-w-xl">
-                    <span class="text-[9px] font-bold tracking-widest uppercase text-amber-500 bg-[#060608]/90 border border-white/5 px-3 py-1 inline-block mb-3">Косметика</span>
-                    <h3 class="text-2xl font-bold uppercase font-heading tracking-wider mb-2 text-white">Премиальный уход</h3>
-                    <p class="text-gray-300 text-sm font-light leading-relaxed">Никакого масс-маркета. Мы закупаем только специализированную мужскую косметику высшего эшелона для фиксации стайлинга и надежной защиты кожи лица.</p>
+                    <span class="text-[10px] font-bold tracking-widest uppercase text-amber-500 bg-[#08080a]/90 border border-white/10 px-3 py-1 inline-block mb-3">Бренды</span>
+                    <h3 class="text-xl sm:text-2xl font-bold uppercase font-heading tracking-wider mb-2 text-white">Премиальный мужской уход</h3>
+                    <p class="text-gray-300 text-sm font-light leading-relaxed">Никаких масс-маркет средств. Работаем исключительно на специализированной мужской косметике высшего сегмента для идеального стайлинга и защиты кожи лица.</p>
                 </div>
             </div>
 
-            <!-- Карточка 5: 1 (8).jpg -->
-            <div class="bento-card relative bg-cover bg-center border border-white/5 min-h-[260px] sm:min-h-[320px] overflow-hidden group" 
-                 style="background-image: url('1%20(8).jpg');">
-                <div class="absolute inset-0 bg-[#060608]/75 group-hover:bg-[#060608]/40 transition-all duration-500"></div>
-                <div class="absolute inset-0 p-8 flex flex-col justify-between z-10">
-                    <i data-lucide="compass" class="w-5 h-5 text-amber-500"></i>
+            <!-- Ячейка 5: Кроссовки на подножке кресла 1 (8).jpg -->
+            <div class="reveal-card relative bg-cover bg-center border border-white/5 min-h-[250px] sm:min-h-[300px] overflow-hidden group" 
+                 style="background-image: url('img/tm-8.jpg');">
+                <div class="absolute inset-0 bg-[#08080a]/75 group-hover:bg-[#08080a]/40 transition-all duration-500"></div>
+                <div class="absolute inset-0 p-6 sm:p-8 flex flex-col justify-between z-10">
+                    <i data-lucide="navigation" class="w-5 h-5 text-amber-500"></i>
                     <div>
-                        <h3 class="text-xl font-bold uppercase font-heading tracking-wider mb-2 text-white">Локация для своих</h3>
-                        <p class="text-gray-300 text-xs font-light leading-relaxed">Нахождение на ул. Сысоева, 2 избавляет от необходимости стоять в пробках в центр города гостям из районов Строитель и Флегонтова.</p>
+                        <h3 class="text-xl font-bold uppercase font-heading tracking-wider mb-2 text-white">Локация без пробок</h3>
+                        <p class="text-gray-300 text-xs font-light leading-relaxed">Расположение на ул. Сысоева, 2 позволяет жителям районов Строитель и Флегонтова экономить часы на визитах.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- БЛОК 3: УСЛУГИ И СТОИМОСТЬ -->
-    <section id="price" class="py-24 sm:py-32 bg-[#0b0b0e] border-y border-white/5 reveal-view">
+    <!-- БЛОК 3: ИНТЕРАКТИВНЫЙ ПРАЙС-ЛИСТ -->
+    <section id="price" class="py-20 sm:py-32 bg-[#0c0c10] border-y border-white/5 reveal-card">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             
             <div class="lg:col-span-7 space-y-8 sm:space-y-10">
                 <div>
                     <h2 class="text-xs font-bold tracking-[0.4em] uppercase text-amber-500 mb-2">Прейскурант</h2>
-                    <p class="text-3xl sm:text-4xl font-black font-heading uppercase tracking-wide">Услуги мастерской</p>
+                    <p class="text-3xl sm:text-4xl font-black font-heading uppercase tracking-wide">Услуги и стоимость</p>
+                    <p class="text-gray-400 text-xs font-light mt-2">Вы точно знаете итоговую сумму до начала всех процедур.</p>
                 </div>
 
+                <!-- Табы сортировки цен -->
                 <div class="flex space-x-2 border-b border-white/5 pb-4 text-[10px] font-bold tracking-widest uppercase overflow-x-auto">
                     <button onclick="changeTab('all')" class="tab-el px-4 py-2.5 bg-white text-black transition-all whitespace-nowrap shrink-0">Базовый зал</button>
-                    <button onclick="changeTab('complex')" class="tab-el px-4 py-2.5 border border-white/10 text-gray-400 hover:text-white transition-all whitespace-nowrap shrink-0">Комплексы</button>
+                    <button onclick="changeTab('complex')" class="tab-el px-4 py-2.5 border border-white/10 text-gray-400 hover:text-white transition-all whitespace-nowrap shrink-0">Complex решения</button>
                 </div>
 
                 <div id="price-box" class="space-y-6">
-                    <div class="price-row flex justify-between items-end border-b border-white/5 pb-4 group gap-4 cursor-pointer" data-type="all">
+                    <div class="price-row flex justify-between items-end border-b border-white/5 pb-4 group gap-4" data-type="all">
                         <div class="max-w-md">
                             <h4 class="text-base sm:text-lg font-bold font-heading tracking-wider group-hover:text-amber-500 transition-colors">Мужская стрижка</h4>
-                            <p class="text-gray-400 text-xs font-light mt-1">Подбор геометрии под тип лица, мытье головы, уход, стрижка ножницами/машинкой и укладка.</p>
+                            <p class="text-gray-400 text-xs font-light mt-1">Подбор формы под тип лица, мытье головы, уход, стрижка ножницами/машинкой и укладка.</p>
                         </div>
                         <span class="text-lg sm:text-xl font-bold font-heading text-white whitespace-nowrap">от 1200 ₽</span>
                     </div>
-                    <div class="price-row flex justify-between items-end border-b border-white/5 pb-4 group gap-4 cursor-pointer" data-type="all">
+                    <div class="price-row flex justify-between items-end border-b border-white/5 pb-4 group gap-4" data-type="all">
                         <div class="max-w-md">
                             <h4 class="text-base sm:text-lg font-bold font-heading tracking-wider group-hover:text-amber-500 transition-colors">Стрижка бороды и усов</h4>
-                            <p class="text-gray-400 text-xs font-light mt-1">Архитектура бороды, распаривание компрессами, контуры опасным лезвием и уход профессиональными маслами.</p>
+                            <p class="text-gray-400 text-xs font-light mt-1">Архитектура бороды, распаривание компрессами, контуры лезвием и уход маслами.</p>
                         </div>
                         <span class="text-lg sm:text-xl font-bold font-heading text-white whitespace-nowrap">от 800 ₽</span>
                     </div>
-                    <div class="price-row flex justify-between items-end border-b border-white/5 pb-4 group gap-4 cursor-pointer" data-type="complex">
+                    <div class="price-row flex justify-between items-end border-b border-white/5 pb-4 group gap-4" data-type="complex">
                         <div class="max-w-md">
                             <h4 class="text-base sm:text-lg font-bold font-heading tracking-wider group-hover:text-amber-500 transition-colors">Комплекс: Стрижка + Борода</h4>
-                            <p class="text-gray-400 text-xs font-light mt-1">Полный цикл ухода за вашим стилем в рамках единого сеанса. Выгодное комбо-решение.</p>
+                            <p class="text-gray-400 text-xs font-light mt-1">Полный цикл премиального мужского ухода. Сбалансированный выбор для экономии времени.</p>
                         </div>
                         <span class="text-lg sm:text-xl font-bold font-heading text-amber-500 whitespace-nowrap">от 1800 ₽</span>
                     </div>
-                    <div class="price-row flex justify-between items-end border-b border-white/5 pb-4 group gap-4 cursor-pointer" data-type="all">
+                    <div class="price-row flex justify-between items-end border-b border-white/5 pb-4 group gap-4" data-type="all">
                         <div class="max-w-md">
                             <h4 class="text-base sm:text-lg font-bold font-heading tracking-wider group-hover:text-amber-500 transition-colors">Детская стрижка</h4>
                             <p class="text-gray-400 text-xs font-light mt-1">Стильный и аккуратный образ для сыновей наших клиентов в возрасте до 12 лет.</p>
@@ -295,92 +376,144 @@
                 </div>
             </div>
 
-            <!-- Правая колонка: 1 (6).jpg -->
-            <div class="lg:col-span-5 relative h-[300px] sm:h-[480px] border border-white/5 overflow-hidden group rounded-none shadow-2xl">
-                <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" 
-                     style="background-image: url('1%20(6).jpg');"></div>
-                <div class="absolute inset-0 bg-gradient-to-t from-[#060608] via-transparent to-transparent"></div>
+            <!-- Правая колонка: Процесс распаривания с помазком 1 (6).jpg -->
+            <div class="lg:col-span-5 relative h-[300px] sm:h-[480px] border border-white/5 overflow-hidden group rounded-sm shadow-2xl">
+                <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-102" 
+                     style="background-image: url('img/tm-6.jpg');"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-transparent"></div>
             </div>
         </div>
     </section>
 
-    <!-- БЛОК 4: БЕСКОНЕЧНЫЙ МАРКИ-СЛАЙДЕР (Галерея) -->
-    <section id="gallery" class="py-20 sm:py-32 space-y-12 sm:space-y-16 reveal-view">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
-            <div>
-                <h2 class="text-xs font-bold tracking-[0.4em] uppercase text-amber-500 mb-2">Портфолио</h2>
-                <p class="text-3xl sm:text-4xl font-black font-heading uppercase tracking-wide">Геометрия в деталях</p>
-            </div>
-            <a href="https://2gis.ru/khabarovsk/gallery/firm/70000001045519312" target="_blank" 
-               class="px-5 py-3.5 border border-white/10 hover:bg-white hover:text-black text-[10px] font-bold uppercase tracking-widest transition-all self-start">
-                Открыть медиагалерею в 2ГИС
-            </a>
+    <!-- БЛОК 4: ГАЛЕРЕЯ РАБОТ С КАРУСЕЛЬЮ -->
+    <section id="gallery" class="py-20 sm:py-32 space-y-12 sm:space-y-16 reveal-card">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <h2 class="text-3xl sm:text-5xl font-black font-heading uppercase tracking-tight">Геометрия макро-деталей и стиля</h2>
         </div>
 
-        <div class="space-y-6 overflow-x-auto md:overflow-x-hidden select-none touch-pan-x">
-            <div class="flex w-[240%] sm:w-[200%] gap-4 sm:gap-6">
-                <!-- Карусель макро-деталей инструментов 1 (2).jpg, 1 (3).jpg, 1 (5).jpg, 1 (12).jpg -->
-                <div class="flex gap-4 sm:gap-6 animate-marquee shrink-0">
-                    <img src="1%20(2).jpg" alt="Ножницы ТМ" class="w-[220px] sm:w-[280px] h-[280px] sm:h-[340px] object-cover border border-white/5">
-                    <img src="1%20(3).jpg" alt="Опасная бритва ТМ" class="w-[220px] sm:w-[280px] h-[280px] sm:h-[340px] object-cover border border-white/5">
-                    <img src="1%20(5).jpg" alt="Триммер ТМ" class="w-[220px] sm:w-[280px] h-[280px] sm:h-[340px] object-cover border border-white/5">
-                    <img src="1%20(12).jpg" alt="Лезвие неон ТМ" class="w-[220px] sm:w-[280px] h-[280px] sm:h-[340px] object-cover border border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+
+                <!-- Блок 1 -->
+                <div class="relative border border-amber-500/20 overflow-hidden bg-[#050506]">
+                    <div class="smoke-stage">
+                        <div class="smoke-slide active">
+                            <img src="portfolio/work-1.jpg" alt="Стрижка 1">
+                        </div>
+                        <div class="smoke-slide">
+                            <img src="portfolio/work-2.jpg" alt="Стрижка 2">
+                        </div>
+                        <div class="smoke-slide">
+                            <img src="portfolio/work-3.jpg" alt="Стрижка 3">
+                        </div>
+                        <div class="smoke-veil"></div>
+                        <div class="absolute inset-0 z-[6] pointer-events-none bg-gradient-to-t from-[#08080a]/60 via-transparent to-transparent"></div>
+                    </div>
                 </div>
-                <div class="flex gap-4 sm:gap-6 animate-marquee shrink-0">
-                    <img src="1%20(2).jpg" alt="Ножницы ТМ" class="w-[220px] sm:w-[280px] h-[280px] sm:h-[340px] object-cover border border-white/5">
-                    <img src="1%20(3).jpg" alt="Опасная бритва ТМ" class="w-[220px] sm:w-[280px] h-[280px] sm:h-[340px] object-cover border border-white/5">
-                    <img src="1%20(5).jpg" alt="Триммер ТМ" class="w-[220px] sm:w-[280px] h-[280px] sm:h-[340px] object-cover border border-white/5">
-                    <img src="1%20(12).jpg" alt="Лезвие неон ТМ" class="w-[220px] sm:w-[280px] h-[280px] sm:h-[340px] object-cover border border-white/5">
+
+                <!-- Блок 2 -->
+                <div class="relative border border-amber-500/20 overflow-hidden bg-[#050506]">
+                    <div class="smoke-stage">
+                        <div class="smoke-slide active">
+                            <img src="portfolio/work-4.jpg" alt="Стрижка 4">
+                        </div>
+                        <div class="smoke-slide">
+                            <img src="portfolio/work-5.jpg" alt="Стрижка 5">
+                        </div>
+                        <div class="smoke-slide">
+                            <img src="portfolio/work-6.jpg" alt="Стрижка 6">
+                        </div>
+                        <div class="smoke-veil"></div>
+                        <div class="absolute inset-0 z-[6] pointer-events-none bg-gradient-to-t from-[#08080a]/60 via-transparent to-transparent"></div>
+                    </div>
                 </div>
+
+                <!-- Блок 3 -->
+                <div class="relative border border-amber-500/20 overflow-hidden bg-[#050506]">
+                    <div class="smoke-stage">
+                        <div class="smoke-slide active">
+                            <img src="portfolio/work-7.jpg" alt="Стрижка 7">
+                        </div>
+                        <div class="smoke-slide">
+                            <img src="portfolio/work-8.jpg" alt="Стрижка 8">
+                        </div>
+                        <div class="smoke-slide">
+                            <img src="portfolio/work-9.jpg" alt="Стрижка 9">
+                        </div>
+                        <div class="smoke-veil"></div>
+                        <div class="absolute inset-0 z-[6] pointer-events-none bg-gradient-to-t from-[#08080a]/60 via-transparent to-transparent"></div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
     <!-- БЛОК 5: КОМАНДА МАСТЕРОВ -->
-    <section id="team" class="py-20 sm:py-32 bg-[#0b0b0e] relative overflow-hidden reveal-view">
-        <!-- Оригинальный фон вешалки-лезвия 1 (7).jpg -->
-        <div class="absolute inset-0 z-0 bg-cover bg-center opacity-[0.03] pointer-events-none" style="background-image: url('1%20(7).jpg');"></div>
+    <section id="team" class="py-20 sm:py-32 relative overflow-hidden reveal-card">
+        <div class="absolute inset-0 z-0 bg-gradient-to-b from-amber-500/5 via-transparent to-transparent pointer-events-none"></div>
 
-        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 space-y-12 sm:space-y-16">
-            <div>
-                <h2 class="text-xs font-bold tracking-[0.4em] uppercase text-amber-500 mb-2">Профессионалы</h2>
-                <p class="text-3xl sm:text-4xl font-black font-heading uppercase tracking-wide">Наши мастера</p>
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 space-y-16 sm:space-y-20">
+            <div class="text-center space-y-4">
+                <h2 class="text-xs font-bold tracking-[0.4em] uppercase text-amber-500 mb-3">Мастерское ремесло</h2>
+                <p class="text-4xl sm:text-5xl font-black font-heading uppercase tracking-tight leading-tight">Наши мастера</p>
+                <p class="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto font-light">Профессионалы, которые живут своим делом. Каждый штрих — результат опыта и любви к ремеслу.</p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Карточка 1 -->
-                <div class="bg-[#060608] border border-white/5 flex flex-col justify-between group hover:border-amber-500/20 transition-all duration-300">
-                    <div class="h-[280px] sm:h-[340px] bg-neutral-950 flex items-center justify-center text-gray-700 text-xs font-heading tracking-[0.2em] uppercase">Профиль специалиста</div>
-                    <div class="p-5 sm:p-6 border-t border-white/5 bg-[#060608]">
-                        <span class="text-[9px] font-bold tracking-widest text-amber-500 uppercase block mb-1">Шеф-Барбер</span>
-                        <h4 class="text-lg font-bold uppercase font-heading tracking-wider mb-4 text-white">Александр</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12">
+                <div class="group">
+                    <div class="relative overflow-hidden border border-white/10 group-hover:border-amber-500/40 transition-all duration-500 bg-gradient-to-br from-white/5 to-transparent h-[380px] sm:h-[460px]">
+                        <img src="masters/Pavel.jpg" alt="Павел" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-transparent opacity-60"></div>
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-amber-500/20 transition-all duration-500"></div>
+                    </div>
+                    <div class="pt-6 space-y-3">
+                        <div>
+                            <span class="inline-block text-[8px] font-bold tracking-[0.3em] uppercase text-amber-500 bg-amber-500/10 px-3 py-1.5 border border-amber-500/20">Барбер</span>
+                        </div>
+                        <h3 class="text-2xl sm:text-3xl font-black font-heading text-white">Павел</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Мастер тонкой геометрии. Каждая линия выверена с хирургической точностью. Специалист по сложным формам и контурам.</p>
                         <a href="https://n275390.yclients.com/company/267129/personal/select-master?o=m-1" target="_blank"
-                           class="w-full inline-block py-3 bg-white/5 text-center text-white font-bold uppercase tracking-widest text-[9px] hover:bg-amber-500 hover:text-black transition-colors duration-300">
-                            Записаться к нему
+                           class="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-amber-500 hover:bg-white text-black font-bold uppercase tracking-wider text-[9px] transition-all duration-300 group/btn">
+                            Записаться <i data-lucide="arrow-right" class="w-3 h-3 group-hover/btn:translate-x-1 transition-transform"></i>
                         </a>
                     </div>
                 </div>
-                <!-- Карточка 2 -->
-                <div class="bg-[#060608] border border-white/5 flex flex-col justify-between group hover:border-amber-500/20 transition-all duration-300">
-                    <div class="h-[280px] sm:h-[340px] bg-neutral-950 flex items-center justify-center text-gray-700 text-xs font-heading tracking-[0.2em] uppercase">Профиль специалиста</div>
-                    <div class="p-5 sm:p-6 border-t border-white/5 bg-[#060608]">
-                        <span class="text-[9px] font-bold tracking-widest text-amber-500 uppercase block mb-1">Топ-Барбер</span>
-                        <h4 class="text-lg font-bold uppercase font-heading tracking-wider mb-4 text-white">Дмитрий</h4>
+
+                <div class="group">
+                    <div class="relative overflow-hidden border border-white/10 group-hover:border-amber-500/40 transition-all duration-500 bg-gradient-to-br from-white/5 to-transparent h-[380px] sm:h-[460px]">
+                        <img src="masters/Vlad.jpg" alt="Влад" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-transparent opacity-60"></div>
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-amber-500/20 transition-all duration-500"></div>
+                    </div>
+                    <div class="pt-6 space-y-3">
+                        <div>
+                            <span class="inline-block text-[8px] font-bold tracking-[0.3em] uppercase text-amber-500 bg-amber-500/10 px-3 py-1.5 border border-amber-500/20">Барбер</span>
+                        </div>
+                        <h3 class="text-2xl sm:text-3xl font-black font-heading text-white">Влад</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Виртуоз работы с бородой и усами. Его фирменный штрих узнают постоянные клиенты. Мастер современного барберинга.</p>
                         <a href="https://n275390.yclients.com/company/267129/personal/select-master?o=m-1" target="_blank"
-                           class="w-full inline-block py-3 bg-white/5 text-center text-white font-bold uppercase tracking-widest text-[9px] hover:bg-amber-500 hover:text-black transition-colors duration-300">
-                            Записаться к нему
+                           class="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-amber-500 hover:bg-white text-black font-bold uppercase tracking-wider text-[9px] transition-all duration-300 group/btn">
+                            Записаться <i data-lucide="arrow-right" class="w-3 h-3 group-hover/btn:translate-x-1 transition-transform"></i>
                         </a>
                     </div>
                 </div>
-                <!-- Карточка 3 -->
-                <div class="bg-[#060608] border border-white/5 flex flex-col justify-between group hover:border-amber-500/20 transition-all duration-300">
-                    <div class="h-[280px] sm:h-[340px] bg-neutral-950 flex items-center justify-center text-gray-700 text-xs font-heading tracking-[0.2em] uppercase">Профиль специалиста</div>
-                    <div class="p-5 sm:p-6 border-t border-white/5 bg-[#060608]">
-                        <span class="text-[9px] font-bold tracking-widest text-amber-500 uppercase block mb-1">Барбер</span>
-                        <h4 class="text-lg font-bold uppercase font-heading tracking-wider mb-4 text-white">Сергей</h4>
+
+                <div class="group">
+                    <div class="relative overflow-hidden border border-white/10 group-hover:border-amber-500/40 transition-all duration-500 bg-gradient-to-br from-white/5 to-transparent h-[380px] sm:h-[460px]">
+                        <img src="masters/alexandra.jpg" alt="Александра" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-transparent opacity-60"></div>
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-amber-500/20 transition-all duration-500"></div>
+                    </div>
+                    <div class="pt-6 space-y-3">
+                        <div>
+                            <span class="inline-block text-[8px] font-bold tracking-[0.3em] uppercase text-amber-500 bg-amber-500/10 px-3 py-1.5 border border-amber-500/20">Барбер</span>
+                        </div>
+                        <h3 class="text-2xl sm:text-3xl font-black font-heading text-white">Александра</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Инновационный подход к классическому ремеслу. Специализируется на стильных трансформациях и сложных техниках укладки.</p>
                         <a href="https://n275390.yclients.com/company/267129/personal/select-master?o=m-1" target="_blank"
-                           class="w-full inline-block py-3 bg-white/5 text-center text-white font-bold uppercase tracking-widest text-[9px] hover:bg-amber-500 hover:text-black transition-colors duration-300">
-                            Записаться к нему
+                           class="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-amber-500 hover:bg-white text-black font-bold uppercase tracking-wider text-[9px] transition-all duration-300 group/btn">
+                            Записаться <i data-lucide="arrow-right" class="w-3 h-3 group-hover/btn:translate-x-1 transition-transform"></i>
                         </a>
                     </div>
                 </div>
@@ -389,15 +522,15 @@
     </section>
 
     <!-- БЛОК 6: ОТЗЫВЫ -->
-    <section id="reviews" class="py-24 sm:py-36 relative overflow-hidden flex items-center min-h-[480px] reveal-view">
-        <!-- Оригинальный фоновый ассет сигар/виски 1 (11).jpg -->
-        <div class="absolute inset-0 z-0 bg-cover bg-center opacity-[0.06]" style="background-image: url('1%20(11).jpg');"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-[#060608] via-transparent to-[#060608] z-10"></div>
+    <section id="reviews" class="py-24 sm:py-36 relative overflow-hidden flex items-center min-h-[480px] reveal-card">
+        <!-- Бэкграунд отзывов: стакан виски, сигара и часы 1 (11).jpg -->
+        <div class="absolute inset-0 z-0 bg-cover bg-center opacity-[0.06]" style="background-image: url('img/tm-11.jpg');"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-[#08080a] via-transparent to-[#08080a] z-10"></div>
 
         <div class="relative z-20 w-full max-w-4xl mx-auto px-4 sm:px-6 text-center">
             <h2 class="text-xs font-bold tracking-[0.4em] uppercase text-amber-500 mb-4">Отзывы гостей</h2>
             
-            <div class="backdrop-blur-2xl bg-white/[0.01] border border-white/5 p-6 sm:p-14 rounded-none shadow-2xl">
+            <div class="backdrop-blur-xl bg-white/[0.01] border border-white/5 p-6 sm:p-14 rounded-none shadow-2xl">
                 <i data-lucide="quote" class="w-6 h-6 sm:w-8 sm:h-8 text-amber-500/20 mx-auto mb-4 sm:mb-6"></i>
                 
                 <div class="min-h-[120px] sm:min-h-[100px] flex items-center justify-center">
@@ -430,7 +563,7 @@
 
     <!-- БЛОК 7: КОНТАКТЫ И КАРТА -->
     <section id="contacts" class="border-t border-white/5 grid grid-cols-1 lg:grid-cols-2">
-        <div class="p-6 sm:p-16 lg:p-20 flex flex-col justify-between space-y-10 bg-[#08080a]">
+        <div class="p-6 sm:p-16 lg:p-20 flex flex-col justify-between space-y-10 bg-[#0a0a0d]">
             <div class="space-y-8 sm:space-y-10">
                 <div>
                     <h2 class="text-xs font-bold tracking-[0.4em] uppercase text-amber-500 mb-2">Локация</h2>
@@ -441,7 +574,7 @@
                     <div class="flex items-start space-x-3">
                         <i data-lucide="map-pin" class="w-5 h-5 text-amber-500 shrink-0 mt-0.5"></i>
                         <div>
-                            <p class="text-white font-semibold">г. Хабаровск, ул. Сысоева, 2</p>
+                            <p class="text-white font-semibold">г.  Хабаровск, ул.  Сысоева, 2</p>
                             <p class="text-xs text-gray-500 mt-1">Около районов Строитель и Флегонтова</p>
                         </div>
                     </div>
@@ -465,110 +598,83 @@
                 </div>
             </div>
 
-            <div class="pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between text-[10px] text-gray-600 uppercase tracking-widest gap-4">
-                <div>© 2026 ТМ Мастерская. Все права защищены.</div>
-                <a href="https://instagram.com/tm_hab" target="_blank" class="hover:text-white transition-colors">@tm_hab</a>
+            <div class="pt-8 border-t border-white/5 space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between text-[10px] text-gray-600 uppercase tracking-widest gap-4">
+                    <div>© 2026 ТМ Мастерская.  Все права защищены.</div>
+                    <a href="https://instagram.com/tm_hab" target="_blank" class="hover:text-white transition-colors">@tm_hab</a>
+                </div>
+                <div class="pt-4 border-t border-white/10">
+                    <a href="https://t.me/Dmitrii_khv27" target="_blank" class="inline-flex items-center gap-2 text-[9px] text-amber-500 hover:text-amber-400 transition-colors font-bold uppercase tracking-wider group">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5 group-hover:rotate-180 transition-transform duration-500"></i> UI/UX дизайнер — Дмитрий Ф
+                    </a>
+                </div>
             </div>
         </div>
 
-        <div class="relative w-full h-[320px] sm:h-[400px] lg:h-full bg-neutral-900 border-l border-white/5">
-            <iframe src="https://2gis.ru/khabarovsk/search/%D0%A2%D0%BC%20%D1%81%D1%82%D1%80%D0%B8%D0%B6%D0%BA%D0%B8/firm/70000001045519312/" 
-                    class="w-full h-full border-0 filter invert-[0.92] hue-rotate-180 grayscale-[0.6]" allowfullscreen="" loading="lazy"></iframe>
+        <div class="relative w-full h-[320px] sm:h-[400px] lg:h-full bg-neutral-900 border-l border-white/5 overflow-hidden">
+            <img src="logo/photo_2026-06-11_15-44-30.jpg" alt="Портфолио ТМ" class="w-full h-full object-cover">
         </div>
     </section>
 
-    <!-- ИНЖЕНЕРНЫЕ СЦЕНАРИИ АНИМАЦИИ (UI-UX Pro Max) -->
+    <!-- ИНТЕЛЛЕКТУАЛЬНЫЕ JS АНИМАЦИИ И МОБИЛЬНАЯ НАВИГАЦИЯ -->
     <script>
         lucide.createIcons();
 
-        // Переключатель мобильного навигационного слоя
+        // Мобильное меню
         const mobileMenu = document.getElementById('mobile-menu');
         const menuIcon = document.getElementById('menu-icon');
+        
         function toggleMenu() {
             const isOpen = mobileMenu.classList.toggle('open');
+            document.body.classList.toggle('menu-open', isOpen);
             menuIcon.setAttribute('data-lucide', isOpen ? 'x' : 'menu');
             lucide.createIcons();
         }
         document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
 
-        // МЕХАНИКА 1: Трекинг линзы рассеивания света за курсором
-        const jsLens = document.getElementById('js-lens');
+        // Ambient Light Эффект
+        const glowOverlay = document.getElementById('ambient-glow');
         document.addEventListener('mousemove', (e) => {
-            jsLens.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+            glowOverlay.style.setProperty('--mouse-x', `${e.clientX}px`);
+            glowOverlay.style.setProperty('--mouse-y', `${e.clientY}px`);
         });
 
-        // МЕХАНИКА 2: Честный многослойный 3D-Параллакс (Голограмма) главного экрана
-        const layerBg = document.getElementById('layer-bg');
-        const layerContent = document.getElementById('layer-content');
+        // Параллакс
+        const heroParallax = document.getElementById('hero-parallax');
         if (window.innerWidth > 1024) {
             document.addEventListener('mousemove', (e) => {
-                const xFactor = (e.clientX / window.innerWidth - 0.5);
-                const yFactor = (e.clientY / window.innerHeight - 0.5);
-                
-                // Задний фон смещается слабо в противовес курсору
-                layerBg.style.transform = `translate3d(${xFactor * -25}px, ${yFactor * -25}px, 0) scale(1.1)`;
-                // Контентный блок плавно тянется за курсором
-                layerContent.style.transform = `translate3d(${xFactor * 20}px, ${yFactor * 20}px, 0)`;
+                const shiftX = (e.clientX / window.innerWidth - 0.5) * 20;
+                const shiftY = (e.clientY / window.innerHeight - 0.5) * 20;
+                heroParallax.style.transform = `translate(${shiftX}px, ${shiftY}px) scale(1.05)`;
             });
         }
 
-        // МЕХАНИКА 3: Скорость скролла и деформация Bento карточек (Kinetic Velocity Stretch)
-        let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const bentoCards = document.querySelectorAll('.bento-card');
-
-        window.addEventListener('scroll', () => {
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            let velocity = Math.abs(scrollTop - lastScrollTop);
-            
-            // Ограничиваем максимальное искажение по вертикали
-            let skew = Math.min(velocity * 0.08, 6); 
-            let scaleY = 1 + Math.min(velocity * 0.0006, 0.03);
-
-            if (window.innerWidth > 768) {
-                bentoCards.forEach(card => {
-                    // Эффект сжатия и наклона под действием инерции скорости
-                    card.style.transform = `matrix(1, 0, ${scrollTop > lastScrollTop ? -skew * 0.002 : skew * 0.002}, ${scaleY}, 0, 0)`;
-                });
-            }
-            
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-        });
-
-        // Плавный сброс деформации в нулевую точку, когда скролл прекращен
-        setInterval(() => {
-            bentoCards.forEach(card => {
-                if (card.style.transform !== 'none' && card.style.transform !== '') {
-                    card.style.transform = 'none';
-                }
-            });
-        }, 150);
-
-        // МЕХАНИКА 4: Умный Magnetic эффект для главной кнопки
-        const magCta = document.getElementById('magnetic-cta');
+        // Magnetic Кнопка
+        const magBtn = document.getElementById('mag-btn');
         if (window.innerWidth > 1024) {
-            magCta.addEventListener('mousemove', (e) => {
-                const area = magCta.getBoundingClientRect();
-                const mx = e.clientX - (area.left + area.width / 2);
-                const my = e.clientY - (area.top + area.height / 2);
-                magCta.style.transform = `translate3d(${mx * 0.35}px, ${my * 0.35}px, 0) scale(1.02)`;
+            magBtn.addEventListener('mousemove', (e) => {
+                const rect = magBtn.getBoundingClientRect();
+                const x = e.clientX - (rect.left + rect.width / 2);
+                const y = e.clientY - (rect.top + rect.height / 2);
+                magBtn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px) scale(1.03)`;
             });
-            magCta.addEventListener('mouseleave', () => {
-                magCta.style.transform = 'translate3d(0, 0, 0) scale(1)';
+            magBtn.addEventListener('mouseleave', () => {
+                magBtn.style.transform = 'translate(0px, 0px) scale(1)';
             });
         }
 
-        // Плавный Mask-Reveal блоков при скролле
-        const viewBlocks = document.querySelectorAll('.reveal-view');
-        const viewObserver = new IntersectionObserver((entries) => {
+        // Появление блоков
+        const revealItems = document.querySelectorAll('.reveal-card');
+        const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
                 }
             });
-        }, { threshold: 0.05 });
-        viewBlocks.forEach(item => viewObserver.observe(item));
+        }, { threshold: 0.03 });
+        revealItems.forEach(item => scrollObserver.observe(item));
 
-        // Логика переключения табов
+        // Табы прайса
         function changeTab(cat) {
             const tabs = document.querySelectorAll('.tab-el');
             tabs.forEach(t => t.className = "tab-el px-4 py-2.5 border border-white/10 text-gray-400 hover:text-white transition-all whitespace-nowrap shrink-0");
@@ -605,6 +711,30 @@
                 rAuthor.style.opacity = '1';
             }, 300);
         }
+
+        // Дымчатая галерея — 3 независимых блока, медленный аристократичный кроссфейд
+        document.querySelectorAll('.smoke-stage').forEach((stage, stageIdx) => {
+            const slides = stage.querySelectorAll('.smoke-slide');
+            const veil = stage.querySelector('.smoke-veil');
+            if (slides.length < 2) return;
+            let idx = 0;
+
+            function advance() {
+                const next = (idx + 1) % slides.length;
+                veil.classList.remove('drifting');
+                void veil.offsetWidth;
+                veil.classList.add('drifting');
+
+                slides[idx].classList.remove('active');
+                slides[next].classList.add('active');
+                idx = next;
+
+                setTimeout(() => veil.classList.remove('drifting'), 2400);
+            }
+
+            // Ступенчатый старт — блоки сменяются не одновременно
+            setTimeout(() => setInterval(advance, 5500), stageIdx * 1800);
+        });
     </script>
 </body>
 </html>

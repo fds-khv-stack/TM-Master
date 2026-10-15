@@ -1,0 +1,9 @@
+# рабочие бэкапы и черновики — в репозиторий не нужно
+.backup_before_fix/
+*.bak
+*.tmp
+
+# системный мусор
+Thumbs.db
+desktop.ini
+.DS_Store
