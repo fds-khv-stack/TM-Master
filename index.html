@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>ТМ — Мастерская мужских стрижек | Хабаровск</title>
     <!-- Tailwind CSS для премиальной верстки -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="tailwind.css">
     <!-- Шрифтовая пара: Syne + Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400..700&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
         body {
@@ -193,6 +192,11 @@
                 width: calc(100% - 2rem);
             }
         }
+    
+        /* Иконка бургера: закрытый = menu, открытый = x (замена lucide.createIcons) */
+        #menu-close-icon { display: none; }
+        body.menu-open #menu-icon { display: none; }
+        body.menu-open #menu-close-icon { display: inline-flex; }
     </style>
 </head>
 <body class="text-gray-100 selection:bg-amber-500 selection:text-black overflow-x-hidden glow-capture">
@@ -224,7 +228,7 @@
                 </a>
                 <!-- Бургер Кнопка для мобильных устройств -->
                 <button id="menu-toggle" class="md:hidden text-white hover:text-amber-500 transition-colors cursor-pointer p-1">
-                    <i data-lucide="menu" class="w-6 h-6" id="menu-icon"></i>
+                    <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" aria-hidden="true"><path d="M4 5h16" /> <path d="M4 12h16" /> <path d="M4 19h16" /></svg><svg id="menu-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" aria-hidden="true"><path d="M18 6 6 18" /> <path d="m6 6 12 12" /></svg>
                 </button>
             </div>
         </div>
@@ -255,7 +259,7 @@
         <div class="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6">
             <div class="max-w-3xl space-y-6">
                 <span class="inline-flex items-center gap-2 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.3em] text-amber-500 bg-amber-500/10 px-3 sm:px-4 py-2 border border-amber-500/20 rounded-sm">
-                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-amber-500"></i> Хабаровск • ул. Сысоева, 2
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 text-amber-500" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /> <path d="m9 12 2 2 4-4" /></svg> Хабаровск • ул. Сысоева, 2
                 </span>
                 <h1 class="text-4xl sm:text-6xl md:text-7xl font-black uppercase font-heading tracking-tight leading-[1.1] md:leading-[1.05]">
                     <div class="line-reveal"><span>ТМ — МАСТЕРСКАЯ</span></div>
@@ -303,7 +307,7 @@
                 <div class="absolute inset-0 bg-[#08080a]/82 group-hover:bg-[#08080a]/65 transition-all duration-500"></div>
                 <div class="relative z-10 p-6 sm:p-8 flex flex-col justify-end h-full">
                     <div class="w-10 h-10 rounded-sm bg-amber-500/10 flex items-center justify-center mb-6 border border-amber-500/20">
-                        <i data-lucide="scissors" class="w-4 h-4 text-amber-500"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-amber-500" aria-hidden="true"><circle cx="6" cy="6" r="3" /> <path d="M8.12 8.12 12 12" /> <path d="M20 4 8.12 15.88" /> <circle cx="6" cy="18" r="3" /> <path d="M14.8 14.8 20 20" /></svg>
                     </div>
                     <h3 class="text-xl font-bold uppercase font-heading tracking-wider mb-3 text-white">Выверенная геометрия</h3>
                     <p class="text-gray-300 text-sm leading-relaxed font-light">Мы отказались от конвейера. Каждый мастер скрупулезно подбирает форму под анатомию черепа, текстуру волос и направление их роста.</p>
@@ -329,7 +333,7 @@
                 <div class="absolute inset-0 bg-[#08080a]/82 group-hover:bg-[#08080a]/65 transition-all duration-500"></div>
                 <div class="relative z-10 p-6 sm:p-8 flex flex-col justify-end h-full">
                     <div class="w-10 h-10 rounded-sm bg-amber-500/10 flex items-center justify-center mb-6 border border-amber-500/20">
-                        <i data-lucide="coffee" class="w-4 h-4 text-amber-500"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-amber-500" aria-hidden="true"><path d="M10 2v2" /> <path d="M14 2v2" /> <path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1" /> <path d="M6 2v2" /></svg>
                     </div>
                     <h3 class="text-xl font-bold uppercase font-heading tracking-wider mb-3 text-white">Правильная пауза</h3>
                     <p class="text-gray-300 text-sm leading-relaxed font-light">Здесь можно перевести дух. Выпить чашку хорошего крепкого кофе или свежего чая, поговорить по делу или просто побыть в абсолютной тишине.</p>
@@ -352,7 +356,7 @@
                  style="background-image: url('img/tm-8.jpg');">
                 <div class="absolute inset-0 bg-[#08080a]/75 group-hover:bg-[#08080a]/40 transition-all duration-500"></div>
                 <div class="absolute inset-0 p-6 sm:p-8 flex flex-col justify-between z-10">
-                    <i data-lucide="navigation" class="w-5 h-5 text-amber-500"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-amber-500" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11" /></svg>
                     <div>
                         <h3 class="text-xl font-bold uppercase font-heading tracking-wider mb-2 text-white">Локация без пробок</h3>
                         <p class="text-gray-300 text-xs font-light leading-relaxed">Расположение на ул. Сысоева, 2 позволяет жителям районов Строитель и Флегонтова экономить часы на визитах.</p>
@@ -413,7 +417,7 @@
                 <div class="pt-2">
                     <a href="https://2gis.ru/khabarovsk/firm/70000001045519312/tab/prices" target="_blank" 
                        class="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-amber-500 hover:text-white transition-colors">
-                        Смотреть актуальный прайс на 2ГИС <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                        Смотреть актуальный прайс на 2ГИС <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5" aria-hidden="true"><path d="M7 7h10v10" /> <path d="M7 17 17 7" /></svg>
                     </a>
                 </div>
             </div>
@@ -517,7 +521,7 @@
                         <p class="text-gray-400 text-sm leading-relaxed">Мастер тонкой геометрии. Каждая линия выверена с хирургической точностью. Специалист по сложным формам и контурам.</p>
                         <a href="https://n275390.yclients.com/company/267129/personal/select-master?o=m-1" target="_blank"
                            class="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-amber-500 hover:bg-white text-black font-bold uppercase tracking-wider text-[9px] transition-all duration-300 group/btn">
-                            Записаться <i data-lucide="arrow-right" class="w-3 h-3 group-hover/btn:translate-x-1 transition-transform"></i>
+                            Записаться <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true"><path d="M5 12h14" /> <path d="m12 5 7 7-7 7" /></svg>
                         </a>
                     </div>
                 </div>
@@ -536,7 +540,7 @@
                         <p class="text-gray-400 text-sm leading-relaxed">Виртуоз работы с бородой и усами. Его фирменный штрих узнают постоянные клиенты. Мастер современного барберинга.</p>
                         <a href="https://n275390.yclients.com/company/267129/personal/select-master?o=m-1" target="_blank"
                            class="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-amber-500 hover:bg-white text-black font-bold uppercase tracking-wider text-[9px] transition-all duration-300 group/btn">
-                            Записаться <i data-lucide="arrow-right" class="w-3 h-3 group-hover/btn:translate-x-1 transition-transform"></i>
+                            Записаться <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true"><path d="M5 12h14" /> <path d="m12 5 7 7-7 7" /></svg>
                         </a>
                     </div>
                 </div>
@@ -555,7 +559,7 @@
                         <p class="text-gray-400 text-sm leading-relaxed">Инновационный подход к классическому ремеслу. Специализируется на стильных трансформациях и сложных техниках укладки.</p>
                         <a href="https://n275390.yclients.com/company/267129/personal/select-master?o=m-1" target="_blank"
                            class="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-amber-500 hover:bg-white text-black font-bold uppercase tracking-wider text-[9px] transition-all duration-300 group/btn">
-                            Записаться <i data-lucide="arrow-right" class="w-3 h-3 group-hover/btn:translate-x-1 transition-transform"></i>
+                            Записаться <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true"><path d="M5 12h14" /> <path d="m12 5 7 7-7 7" /></svg>
                         </a>
                     </div>
                 </div>
@@ -573,7 +577,7 @@
             <h2 class="text-xs font-bold tracking-[0.4em] uppercase text-amber-500 mb-4">Отзывы гостей</h2>
             
             <div class="backdrop-blur-xl bg-white/[0.01] border border-white/5 p-6 sm:p-14 rounded-none shadow-2xl">
-                <i data-lucide="quote" class="w-6 h-6 sm:w-8 sm:h-8 text-amber-500/20 mx-auto mb-4 sm:mb-6"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 sm:w-8 sm:h-8 text-amber-500/20 mx-auto mb-4 sm:mb-6" aria-hidden="true"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z" /> <path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z" /></svg>
                 
                 <div class="min-h-[120px] sm:min-h-[100px] flex items-center justify-center">
                     <p id="review-content" class="text-sm sm:text-base md:text-lg font-light leading-relaxed text-gray-200 transition-all duration-300">
@@ -587,10 +591,10 @@
 
                 <div class="flex justify-center space-x-4 mt-6 sm:mt-8">
                     <button onclick="slideReview(-1)" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-colors cursor-pointer">
-                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
                     </button>
                     <button onclick="slideReview(1)" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-colors cursor-pointer">
-                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
                     </button>
                 </div>
             </div>
@@ -614,18 +618,18 @@
 
                 <div class="space-y-5 text-sm font-light text-gray-400">
                     <div class="flex items-start space-x-3">
-                        <i data-lucide="map-pin" class="w-5 h-5 text-amber-500 shrink-0 mt-0.5"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-amber-500 shrink-0 mt-0.5" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></svg>
                         <div>
                             <p class="text-white font-semibold">г.  Хабаровск, ул.  Сысоева, 2</p>
                             <p class="text-xs text-gray-500 mt-1">Около районов Строитель и Флегонтова</p>
                         </div>
                     </div>
                     <div class="flex items-center space-x-3">
-                        <i data-lucide="clock" class="w-5 h-5 text-amber-500 shrink-0"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-amber-500 shrink-0" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="M12 6v6l4 2" /></svg>
                         <p>Прием гостей: Ежедневно 10:00 — 20:00</p>
                     </div>
                     <div class="flex items-center space-x-3">
-                        <i data-lucide="phone" class="w-5 h-5 text-amber-500 shrink-0"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-amber-500 shrink-0" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" /></svg>
                         <a href="tel:+79990888845" class="text-white font-semibold hover:text-amber-500 transition-colors">+7 999 088-88-45</a>
                     </div>
                 </div>
@@ -647,7 +651,7 @@
                 </div>
                 <div class="pt-4 border-t border-white/10">
                     <a href="https://t.me/Dmitrii_khv27" target="_blank" class="inline-flex items-center gap-2 text-[9px] text-amber-500 hover:text-amber-400 transition-colors font-bold uppercase tracking-wider group">
-                        <i data-lucide="sparkles" class="w-3.5 h-3.5 group-hover:rotate-180 transition-transform duration-500"></i> UI/UX дизайнер — Дмитрий Ф
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 group-hover:rotate-180 transition-transform duration-500" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" /> <path d="M20 2v4" /> <path d="M22 4h-4" /> <circle cx="4" cy="20" r="2" /></svg> UI/UX дизайнер — Дмитрий Ф
                     </a>
                 </div>
             </div>
@@ -660,17 +664,11 @@
 
     <!-- ИНТЕЛЛЕКТУАЛЬНЫЕ JS АНИМАЦИИ И МОБИЛЬНАЯ НАВИГАЦИЯ -->
     <script>
-        lucide.createIcons();
-
         // Мобильное меню
         const mobileMenu = document.getElementById('mobile-menu');
-        const menuIcon = document.getElementById('menu-icon');
-        
         function toggleMenu() {
             const isOpen = mobileMenu.classList.toggle('open');
             document.body.classList.toggle('menu-open', isOpen);
-            menuIcon.setAttribute('data-lucide', isOpen ? 'x' : 'menu');
-            lucide.createIcons();
         }
         document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
 
