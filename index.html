@@ -151,6 +151,48 @@
         #mobile-menu {
             overflow-y: auto;
         }
+    
+        /* ============ АДАПТАЦИЯ ПОД ТАЧ-УСТРОЙСТВА (15.10.2026) ============ */
+        /* Читаемость и зоны нажатия — телефон и планшет */
+        @media (max-width: 1023px) {
+            /* 1. Читаемость подписей: на телефоне мельче 12px не читается */
+            .text-\[8px\]  { font-size: 11px !important;   line-height: 1.5 !important; }
+            .text-\[9px\]  { font-size: 11.5px !important; line-height: 1.5 !important; }
+            .text-\[10px\] { font-size: 12px !important;   line-height: 1.5 !important; }
+            .text-\[11px\] { font-size: 12.5px !important; line-height: 1.5 !important; }
+
+            /* 2. Контраст: копирайт и серые подписи читаются на тёмном фоне */
+            .text-gray-600 { color: #949cab !important; }
+            .text-gray-500 { color: #9aa1ae !important; }
+
+            /* 3. Зоны нажатия: минимум 44px — палец не промахивается */
+            a, button { min-height: 44px; }
+            button:not(.tab-el) { min-width: 44px; }
+            nav a, footer a, .flex a { display: inline-flex; align-items: center; }
+            .tab-el { padding-top: 0.75rem !important; padding-bottom: 0.75rem !important; }
+
+        }
+
+        /* Компоновка только для телефонов */
+        @media (max-width: 767px) {
+            /* 4. Меньше «воздуха» между секциями (было 80px + 48px) */
+            section.py-20 { padding-top: 3.5rem !important; padding-bottom: 3.5rem !important; }
+            .space-y-12 > * + * { margin-top: 2rem !important; }
+            .space-y-16 > * + * { margin-top: 2.5rem !important; }
+
+            /* 5. Контраст текста на фото-карточках: усиливаем градиент */
+            .reveal-card .bg-gradient-to-t {
+                background-image: linear-gradient(to top,
+                    #08080a 0%, rgba(8, 8, 10, 0.92) 34%,
+                    rgba(8, 8, 10, 0.45) 68%, rgba(8, 8, 10, 0) 100%) !important;
+            }
+
+            /* 6. Фото фасада в контактах — аккуратная карточка, а не полноширинный хвост */
+            #contacts img {
+                margin: 1rem; border-radius: 1rem;
+                width: calc(100% - 2rem);
+            }
+        }
     </style>
 </head>
 <body class="text-gray-100 selection:bg-amber-500 selection:text-black overflow-x-hidden glow-capture">
@@ -398,13 +440,13 @@
                 <div class="relative border border-amber-500/20 overflow-hidden bg-[#050506]">
                     <div class="smoke-stage">
                         <div class="smoke-slide active">
-                            <img src="portfolio/work-1.jpg" alt="Стрижка 1">
+                            <img width="736" height="1309" loading="lazy" decoding="async" src="portfolio/work-1.jpg" alt="Стрижка 1">
                         </div>
                         <div class="smoke-slide">
-                            <img src="portfolio/work-2.jpg" alt="Стрижка 2">
+                            <img width="618" height="1200" loading="lazy" decoding="async" src="portfolio/work-2.jpg" alt="Стрижка 2">
                         </div>
                         <div class="smoke-slide">
-                            <img src="portfolio/work-3.jpg" alt="Стрижка 3">
+                            <img width="735" height="1131" loading="lazy" decoding="async" src="portfolio/work-3.jpg" alt="Стрижка 3">
                         </div>
                         <div class="smoke-veil"></div>
                         <div class="absolute inset-0 z-[6] pointer-events-none bg-gradient-to-t from-[#08080a]/60 via-transparent to-transparent"></div>
@@ -415,13 +457,13 @@
                 <div class="relative border border-amber-500/20 overflow-hidden bg-[#050506]">
                     <div class="smoke-stage">
                         <div class="smoke-slide active">
-                            <img src="portfolio/work-4.jpg" alt="Стрижка 4">
+                            <img width="736" height="1104" loading="lazy" decoding="async" src="portfolio/work-4.jpg" alt="Стрижка 4">
                         </div>
                         <div class="smoke-slide">
-                            <img src="portfolio/work-5.jpg" alt="Стрижка 5">
+                            <img width="605" height="1076" loading="lazy" decoding="async" src="portfolio/work-5.jpg" alt="Стрижка 5">
                         </div>
                         <div class="smoke-slide">
-                            <img src="portfolio/work-6.jpg" alt="Стрижка 6">
+                            <img width="600" height="800" loading="lazy" decoding="async" src="portfolio/work-6.jpg" alt="Стрижка 6">
                         </div>
                         <div class="smoke-veil"></div>
                         <div class="absolute inset-0 z-[6] pointer-events-none bg-gradient-to-t from-[#08080a]/60 via-transparent to-transparent"></div>
@@ -432,13 +474,13 @@
                 <div class="relative border border-amber-500/20 overflow-hidden bg-[#050506]">
                     <div class="smoke-stage">
                         <div class="smoke-slide active">
-                            <img src="portfolio/work-7.jpg" alt="Стрижка 7">
+                            <img width="853" height="1280" loading="lazy" decoding="async" src="portfolio/work-7.jpg" alt="Стрижка 7">
                         </div>
                         <div class="smoke-slide">
-                            <img src="portfolio/work-8.jpg" alt="Стрижка 8">
+                            <img width="853" height="1280" loading="lazy" decoding="async" src="portfolio/work-8.jpg" alt="Стрижка 8">
                         </div>
                         <div class="smoke-slide">
-                            <img src="portfolio/work-9.jpg" alt="Стрижка 9">
+                            <img width="853" height="1280" loading="lazy" decoding="async" src="portfolio/work-9.jpg" alt="Стрижка 9">
                         </div>
                         <div class="smoke-veil"></div>
                         <div class="absolute inset-0 z-[6] pointer-events-none bg-gradient-to-t from-[#08080a]/60 via-transparent to-transparent"></div>
@@ -463,7 +505,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12">
                 <div class="group">
                     <div class="relative overflow-hidden border border-white/10 group-hover:border-amber-500/40 transition-all duration-500 bg-gradient-to-br from-white/5 to-transparent h-[380px] sm:h-[460px]">
-                        <img src="masters/Pavel.jpg" alt="Павел" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img width="736" height="917" loading="lazy" decoding="async" src="masters/Pavel.jpg" alt="Павел" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-transparent opacity-60"></div>
                         <div class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-amber-500/20 transition-all duration-500"></div>
                     </div>
@@ -482,7 +524,7 @@
 
                 <div class="group">
                     <div class="relative overflow-hidden border border-white/10 group-hover:border-amber-500/40 transition-all duration-500 bg-gradient-to-br from-white/5 to-transparent h-[380px] sm:h-[460px]">
-                        <img src="masters/Vlad.jpg" alt="Влад" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img width="736" height="741" loading="lazy" decoding="async" src="masters/Vlad.jpg" alt="Влад" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-transparent opacity-60"></div>
                         <div class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-amber-500/20 transition-all duration-500"></div>
                     </div>
@@ -501,7 +543,7 @@
 
                 <div class="group">
                     <div class="relative overflow-hidden border border-white/10 group-hover:border-amber-500/40 transition-all duration-500 bg-gradient-to-br from-white/5 to-transparent h-[380px] sm:h-[460px]">
-                        <img src="masters/alexandra.jpg" alt="Александра" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img width="720" height="1195" loading="lazy" decoding="async" src="masters/alexandra.jpg" alt="Александра" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-transparent opacity-60"></div>
                         <div class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-amber-500/20 transition-all duration-500"></div>
                     </div>
@@ -612,7 +654,7 @@
         </div>
 
         <div class="relative w-full h-[320px] sm:h-[400px] lg:h-full bg-neutral-900 border-l border-white/5 overflow-hidden">
-            <img src="logo/photo_2026-06-11_15-44-30.jpg" alt="Портфолио ТМ" class="w-full h-full object-cover">
+            <img width="1280" height="960" loading="lazy" decoding="async" src="logo/photo_2026-06-11_15-44-30.jpg" alt="Портфолио ТМ" class="w-full h-full object-cover">
         </div>
     </section>
 
