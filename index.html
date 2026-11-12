@@ -197,6 +197,9 @@
         #menu-close-icon { display: none; }
         body.menu-open #menu-icon { display: none; }
         body.menu-open #menu-close-icon { display: inline-flex; }
+        /* Четыре реальных мастера: 1 / 2 / 4 колонки. */
+        @media (min-width: 1024px) { .team-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+        .team-grid > .group > .relative { height: auto; aspect-ratio: 3 / 4; }
     </style>
 </head>
 <body class="text-gray-100 selection:bg-amber-500 selection:text-black overflow-x-hidden glow-capture">
@@ -444,13 +447,16 @@
                 <div class="relative border border-amber-500/20 overflow-hidden bg-[#050506]">
                     <div class="smoke-stage">
                         <div class="smoke-slide active">
-                            <img width="736" height="1309" loading="lazy" decoding="async" src="portfolio/work-1.jpg" alt="Стрижка 1">
+                            <img width="1707" height="2560" loading="lazy" decoding="async" src="portfolio/session-4402.jpg" alt="Укладка волос феном">
                         </div>
                         <div class="smoke-slide">
-                            <img width="618" height="1200" loading="lazy" decoding="async" src="portfolio/work-2.jpg" alt="Стрижка 2">
+                            <img width="1707" height="2560" loading="lazy" decoding="async" src="portfolio/session-4413.jpg" alt="Проработка формы стрижки ножницами">
                         </div>
                         <div class="smoke-slide">
-                            <img width="735" height="1131" loading="lazy" decoding="async" src="portfolio/work-3.jpg" alt="Стрижка 3">
+                            <img width="1707" height="2560" loading="lazy" decoding="async" src="portfolio/session-3863.jpg" alt="Мужская стрижка машинкой">
+                        </div>
+                        <div class="smoke-slide">
+                            <img width="1707" height="2560" loading="lazy" decoding="async" src="portfolio/session-3884.jpg" alt="Проработка виска машинкой">
                         </div>
                         <div class="smoke-veil"></div>
                         <div class="absolute inset-0 z-[6] pointer-events-none bg-gradient-to-t from-[#08080a]/60 via-transparent to-transparent"></div>
@@ -461,13 +467,16 @@
                 <div class="relative border border-amber-500/20 overflow-hidden bg-[#050506]">
                     <div class="smoke-stage">
                         <div class="smoke-slide active">
-                            <img width="736" height="1104" loading="lazy" decoding="async" src="portfolio/work-4.jpg" alt="Стрижка 4">
+                            <img width="1707" height="2560" loading="lazy" decoding="async" src="portfolio/session-4408.jpg" alt="Мужская стрижка ножницами и расчёской">
                         </div>
                         <div class="smoke-slide">
-                            <img width="605" height="1076" loading="lazy" decoding="async" src="portfolio/work-5.jpg" alt="Стрижка 5">
+                            <img width="1707" height="2560" loading="lazy" decoding="async" src="portfolio/session-4417.jpg" alt="Окантовка мужской стрижки">
                         </div>
                         <div class="smoke-slide">
-                            <img width="600" height="800" loading="lazy" decoding="async" src="portfolio/work-6.jpg" alt="Стрижка 6">
+                            <img width="1707" height="2560" loading="lazy" decoding="async" src="portfolio/session-4436.jpg" alt="Оформление бороды расчёской">
+                        </div>
+                        <div class="smoke-slide">
+                            <img width="1710" height="2560" loading="lazy" decoding="async" src="portfolio/session-3917.jpg" alt="Работа ножницами над мужской стрижкой">
                         </div>
                         <div class="smoke-veil"></div>
                         <div class="absolute inset-0 z-[6] pointer-events-none bg-gradient-to-t from-[#08080a]/60 via-transparent to-transparent"></div>
@@ -478,13 +487,16 @@
                 <div class="relative border border-amber-500/20 overflow-hidden bg-[#050506]">
                     <div class="smoke-stage">
                         <div class="smoke-slide active">
-                            <img width="853" height="1280" loading="lazy" decoding="async" src="portfolio/work-7.jpg" alt="Стрижка 7">
+                            <img width="1707" height="2560" loading="lazy" decoding="async" src="portfolio/session-4409.jpg" alt="Проработка перехода на затылке">
                         </div>
                         <div class="smoke-slide">
-                            <img width="853" height="1280" loading="lazy" decoding="async" src="portfolio/work-8.jpg" alt="Стрижка 8">
+                            <img width="1707" height="2560" loading="lazy" decoding="async" src="portfolio/session-4419.jpg" alt="Оформление контура бороды бритвой">
                         </div>
                         <div class="smoke-slide">
-                            <img width="853" height="1280" loading="lazy" decoding="async" src="portfolio/work-9.jpg" alt="Стрижка 9">
+                            <img width="1707" height="2560" loading="lazy" decoding="async" src="portfolio/session-3867.jpg" alt="Работа барбера над формой стрижки">
+                        </div>
+                        <div class="smoke-slide">
+                            <img width="1707" height="2560" loading="lazy" decoding="async" src="portfolio/session-3856.jpg" alt="Завершение укладки феном">
                         </div>
                         <div class="smoke-veil"></div>
                         <div class="absolute inset-0 z-[6] pointer-events-none bg-gradient-to-t from-[#08080a]/60 via-transparent to-transparent"></div>
@@ -506,10 +518,10 @@
                 <p class="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto font-light">Профессионалы, которые живут своим делом. Каждый штрих — результат опыта и любви к ремеслу.</p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12">
+            <div class="team-grid grid grid-cols-1 sm:grid-cols-2 gap-10 lg:gap-12">
                 <div class="group">
                     <div class="relative overflow-hidden border border-white/10 group-hover:border-amber-500/40 transition-all duration-500 bg-gradient-to-br from-white/5 to-transparent h-[380px] sm:h-[460px]">
-                        <img width="736" height="917" loading="lazy" decoding="async" src="masters/Pavel.jpg" alt="Павел" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img width="854" height="1280" loading="lazy" decoding="async" src="masters/pavel-real.jpg" alt="Павел" style="object-position: center 30%;" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-transparent opacity-60"></div>
                         <div class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-amber-500/20 transition-all duration-500"></div>
                     </div>
@@ -518,9 +530,8 @@
                             <span class="inline-block text-[8px] font-bold tracking-[0.3em] uppercase text-amber-500 bg-amber-500/10 px-3 py-1.5 border border-amber-500/20">Барбер</span>
                         </div>
                         <h3 class="text-2xl sm:text-3xl font-black font-heading text-white">Павел</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Мастер тонкой геометрии. Каждая линия выверена с хирургической точностью. Специалист по сложным формам и контурам.</p>
                         <a href="https://n275390.yclients.com/company/267129/personal/select-master?o=m-1" target="_blank"
-                           class="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-amber-500 hover:bg-white text-black font-bold uppercase tracking-wider text-[9px] transition-all duration-300 group/btn">
+                           class="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-amber-500 hover:bg-white text-black font-bold uppercase tracking-wider text-[9px] transition-all duration-300 group/btn" aria-label="Записаться: Павел">
                             Записаться <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true"><path d="M5 12h14" /> <path d="m12 5 7 7-7 7" /></svg>
                         </a>
                     </div>
@@ -528,7 +539,7 @@
 
                 <div class="group">
                     <div class="relative overflow-hidden border border-white/10 group-hover:border-amber-500/40 transition-all duration-500 bg-gradient-to-br from-white/5 to-transparent h-[380px] sm:h-[460px]">
-                        <img width="736" height="741" loading="lazy" decoding="async" src="masters/Vlad.jpg" alt="Влад" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img width="1706" height="2560" loading="lazy" decoding="async" src="masters/vladislav-real.jpg" alt="Владислав" style="object-position: center 30%;" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-transparent opacity-60"></div>
                         <div class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-amber-500/20 transition-all duration-500"></div>
                     </div>
@@ -536,10 +547,9 @@
                         <div>
                             <span class="inline-block text-[8px] font-bold tracking-[0.3em] uppercase text-amber-500 bg-amber-500/10 px-3 py-1.5 border border-amber-500/20">Барбер</span>
                         </div>
-                        <h3 class="text-2xl sm:text-3xl font-black font-heading text-white">Влад</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Виртуоз работы с бородой и усами. Его фирменный штрих узнают постоянные клиенты. Мастер современного барберинга.</p>
+                        <h3 class="text-2xl sm:text-3xl font-black font-heading text-white">Владислав</h3>
                         <a href="https://n275390.yclients.com/company/267129/personal/select-master?o=m-1" target="_blank"
-                           class="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-amber-500 hover:bg-white text-black font-bold uppercase tracking-wider text-[9px] transition-all duration-300 group/btn">
+                           class="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-amber-500 hover:bg-white text-black font-bold uppercase tracking-wider text-[9px] transition-all duration-300 group/btn" aria-label="Записаться: Владислав">
                             Записаться <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true"><path d="M5 12h14" /> <path d="m12 5 7 7-7 7" /></svg>
                         </a>
                     </div>
@@ -547,7 +557,25 @@
 
                 <div class="group">
                     <div class="relative overflow-hidden border border-white/10 group-hover:border-amber-500/40 transition-all duration-500 bg-gradient-to-br from-white/5 to-transparent h-[380px] sm:h-[460px]">
-                        <img width="720" height="1195" loading="lazy" decoding="async" src="masters/alexandra.jpg" alt="Александра" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img width="853" height="1280" loading="lazy" decoding="async" src="masters/anastasia-real.jpg" alt="Анастасия" style="object-position: center 30%;" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-transparent opacity-60"></div>
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-amber-500/20 transition-all duration-500"></div>
+                    </div>
+                    <div class="pt-6 space-y-3">
+                        <div>
+                            <span class="inline-block text-[8px] font-bold tracking-[0.3em] uppercase text-amber-500 bg-amber-500/10 px-3 py-1.5 border border-amber-500/20">Барбер</span>
+                        </div>
+                        <h3 class="text-2xl sm:text-3xl font-black font-heading text-white">Анастасия</h3>
+                        <a href="https://n275390.yclients.com/company/267129/personal/select-master?o=m-1" target="_blank"
+                           class="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-amber-500 hover:bg-white text-black font-bold uppercase tracking-wider text-[9px] transition-all duration-300 group/btn" aria-label="Записаться: Анастасия">
+                            Записаться <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true"><path d="M5 12h14" /> <path d="m12 5 7 7-7 7" /></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="group">
+                    <div class="relative overflow-hidden border border-white/10 group-hover:border-amber-500/40 transition-all duration-500 bg-gradient-to-br from-white/5 to-transparent h-[380px] sm:h-[460px]">
+                        <img width="1706" height="2560" loading="lazy" decoding="async" src="masters/alexandra-real.jpg" alt="Александра" style="object-position: center 30%;" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-transparent opacity-60"></div>
                         <div class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-amber-500/20 transition-all duration-500"></div>
                     </div>
@@ -556,9 +584,8 @@
                             <span class="inline-block text-[8px] font-bold tracking-[0.3em] uppercase text-amber-500 bg-amber-500/10 px-3 py-1.5 border border-amber-500/20">Барбер</span>
                         </div>
                         <h3 class="text-2xl sm:text-3xl font-black font-heading text-white">Александра</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Инновационный подход к классическому ремеслу. Специализируется на стильных трансформациях и сложных техниках укладки.</p>
                         <a href="https://n275390.yclients.com/company/267129/personal/select-master?o=m-1" target="_blank"
-                           class="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-amber-500 hover:bg-white text-black font-bold uppercase tracking-wider text-[9px] transition-all duration-300 group/btn">
+                           class="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-amber-500 hover:bg-white text-black font-bold uppercase tracking-wider text-[9px] transition-all duration-300 group/btn" aria-label="Записаться: Александра">
                             Записаться <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true"><path d="M5 12h14" /> <path d="m12 5 7 7-7 7" /></svg>
                         </a>
                     </div>
